@@ -3,11 +3,11 @@ const url="http://localhost:3000/api/products";
 let sectionProduit = document.querySelector('.items')
 let produit = document.querySelector('a');
 
-//--------------------pas besoin ???
-// let nomProduit= document.querySelector('.items .productName');
-// let image = document.querySelector('.items img');
-// let description = document.querySelector('.items .productDescription');
-// let footer= document.querySelector('footer');
+// --------------------pas besoin ???
+let nomProduit= document.querySelector('.items .productName');
+let image = document.querySelector('.items img');
+let description = document.querySelector('.items .productDescription');
+let footer= document.querySelector('footer');
 //--------------------
 async function récupererDonnees(){
 
@@ -89,7 +89,10 @@ affichage = (donnees)=>{
     `
       sectionProduit.innerHTML = produit;
               console.log(produit);
-
+    // nomProduit.textContent = canape.name;
+    // image.src = canape.imageUrl;
+    // image.alt = canape.altTxt;
+    // description = canape.description
     });
 }  
 
