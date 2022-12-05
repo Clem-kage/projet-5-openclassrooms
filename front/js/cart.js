@@ -1,7 +1,7 @@
 
 let tab = (JSON.parse(sessionStorage.getItem('list')));
 // console.log(tab.length);
-console.log(tab);
+// console.log(tab);
 
 let sectionArticle = document.querySelector('#cart__items');
 let totalPrix = document.querySelector('#totalPrice');
@@ -130,7 +130,7 @@ tab.forEach(products => {
       if(tab < 1){
         sessionStorage.clear();
       }
-      console.log(sesSto)
+      // console.log(sesSto)
      })
      let btnSupp = document.createElement('p');
      btnSupp.classList.add('deleteItem');
@@ -261,7 +261,8 @@ let messErreurVille = document.querySelector('.cart__order__form__question:nth-c
 let messErreurEmail = document.querySelector('.cart__order__form__question:nth-child(5) p');
 let messages = document.querySelectorAll('.cart__order__form__question p');
 
-let valid = document.querySelector('#order');
+let valid = document.getElementById('order');
+let formulaire = document.querySelector('.cart__order__form')
 
 let messageErreur = 'formulaire non valide';
 let messageCorrect = 'formulaire valide';
@@ -269,24 +270,25 @@ let messageCorrect = 'formulaire valide';
 
 
 
+// console.log(valid)
 //rejex voulu
 let lettres = /^[a-zA-Z\s]+$/;
 let chiffres = /^[0-9]/;
 let mail =  /\S+@\S+\.\S+/;
-console.log(lettres)
+// console.log(lettres)
 
 //verification des champs de formulaire
 let verifLettre = (input, mess)=>{
   input.addEventListener('input', (e)=>{
     let valeur = e.target.value;
    if(lettres.test(valeur) == false != ""){
-     console.log('pblm');
+    //  console.log('pblm');
      mess.textContent = messageErreur;
      mess.style.color = 'red';
      return false;
    }
    else{
-    console.log('bon');
+    // console.log('bon');
     mess.textContent = messageCorrect;
     mess.style.color = 'green';
     return true;
@@ -299,13 +301,13 @@ let verifAdresse = (input, mess)=>{
   input.addEventListener('input', (i)=>{
     let valeur = i.target.value;
    if(lettres.test(valeur) == false && chiffres.test(valeur) == false ){
-     console.log('pblm');
+    //  console.log('pblm');
      mess.textContent = messageErreur;
      mess.style.color = 'red';
      return false;
    }
    else{
-    console.log('bon');
+    // console.log('bon');
     mess.textContent = messageCorrect;
     mess.style.color = 'green';
     return true;
@@ -317,13 +319,13 @@ let verifMail = (input, mess)=>{
   input.addEventListener('input', (a)=>{
     let valeur = a.target.value;
    if(valeur.search(mail) === 0){
-    console.log('bon');
+    // console.log('bon');
     mess.textContent = messageCorrect;
     mess.style.color = 'green';
     return true;
    }
    else if(valeur.search(mail) === -1){
-    console.log('pblm');
+    // console.log('pblm');
     mess.textContent = messageErreur;
     mess.style.color = 'red';
     return false;
@@ -351,7 +353,7 @@ let formulairevalid = ()=>{
    messages.forEach(ele => {
      tabForm.push(ele.textContent)
     });
-     console.log(tabForm);
+    //  console.log(tabForm);
      for(let e = 0; e <= tabForm.length; e++){
        if (tabForm[e] != messageCorrect){
        return false;
@@ -380,11 +382,10 @@ let notempty = ()=>{
 
 // mise en forme dela requete
 let requeteForm = ()=>{
- 
-  let tableauFinal =[]
-  tab.forEach(products => {
-    let res = products.id;
-    tableauFinal.push(res)
+  let products =[]
+  tab.forEach(product => {
+    let res = product.id;
+    products.push(res)
   });  
   
     let firstName = formPrenom.value;
@@ -394,8 +395,8 @@ let requeteForm = ()=>{
     let email  = formEmail.value;
   
     let contact = {firstName, lastName, address, city, email};
-    let result = {tableauFinal, contact}
-    console.log(result)
+    let result = {products, contact}
+    // console.log(result)
     return result;
   }
   // fin mise en forme dela requete
@@ -405,34 +406,40 @@ let requeteForm = ()=>{
 
 
 // requete transmise à l'API
-let soumettreFormulaire = (e)=>{
-  e.preventDefault()
+let soumettreFormulaire = ()=>{
+  // e.preventDefault();
   const objet = requeteForm();
-  console.log(objet);
-   let promese = fetch( 'http://localhost:3000/api/products/orders', {  
+  let option = {  
     method: 'POST',
     body: JSON.stringify(objet), 
-    headers : {
-      "content-type": "application/json",
-    },
-  });
-   promese.then(async (response) => {
-   try{
-     console.log(response);
-     const contenu = await response.json();
-     console.log(contenu);
-   } catch (e){
-     console.log(e);
-   }
-   });
+    headers: {
+      'content-type': 'application/json',
+    }
+  };
+  // console.log(objet);
 
+   fetch('http://localhost:3000/api/products/order', option)
+  .then(response => response.json())
+  .then(data => {
+    // console.log(data)
+    sessionStorage.setItem('orderId', data.orderId);
+    document.location.href = `confirmation.html?id=${data.orderId}`;
+  })
+   .catch(err=>console.log(err)) 
+  ;
+}
+  // valid.addEventListener('click', soumettreFormulaire);
+  
+
+
+  
+  
 
   //  systeme de fond
 valid.addEventListener('click', (e)=>{
-
+   e.preventDefault();
    if (formulairevalid() == true){
-      soumettreFormulaire(e);
-      // e.preventDefault()
+      soumettreFormulaire();
    }
    else{
      alert('validez le panier avec vos informations');
@@ -440,7 +447,7 @@ valid.addEventListener('click', (e)=>{
 
 })
 
-}
+
 // fin systeme de protection de formulaire------------------------------------------------------------------------------
 
 // 

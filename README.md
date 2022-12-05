@@ -5,7 +5,7 @@ This is the front end and back end server for Project 5 of the Web Developer pat
 ### Back end Prerequisites ###
 
 You will need to have Node and `npm` installed locally on your machine.
-
+To start the backend server use `cd back` to go in the folder, and use the command `npm start`.
 ### Back end Installation ###
 
 Clone this repo. From the "back" folder of the project, run `npm install`. You 

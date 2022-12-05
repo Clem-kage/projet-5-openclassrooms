@@ -23,7 +23,7 @@ if(!requete.ok) {
 }
 else{
   let data = await requete.json();
-  console.log(data);
+  // console.log(data);
 
 //boucle de création d'articles-----------------------
   data.forEach(product => {

@@ -14,7 +14,7 @@ let descriptionProduit = document.querySelector('#description');
 let couleurProduit = document.querySelector('#colors');
 let option = document.querySelectorAll('#colors > option');
 let ajout = document.querySelector('#addToCart');
-console.log(localStorage)
+// console.log(localStorage)
 
 // appel de données-------------------------------------------------
 fetch(`${url}/${id}`)
@@ -69,24 +69,23 @@ fetch(`${url}/${id}`)
         }
       }
       let secuPanier = () => {
-        for (let i = 0; i < panier.length; i++) {
-          
-          if (panier[i].id == recupData(res).id) {
-            if(confirm('Voulez-vous le même article avec une couleur différente?') == true){
-                return false
-            }
-            else{
-            alert("Il y a une similarité")
-            return true;
-            }
-        
-      }
-
-    }
+        // for (let i = 0; i < panier.length; i++) {
+          let target = panier.filter(item=> item.id === recupData(res).id && item.col === recupData(res).col);
+          console.log(target)
+          if(target.length == 0){
+            alert("nouveau produit ajoué au panier")
+            return false
+          }
+          else{
+            alert('produit déja ajouté')
+            return true
+          }
+     
   }
+
         // systeme de fond-----------------------------------------------------------------
         if (panier) {
-          console.log('ok');
+          // console.log('ok');
           if (secuPanier() != true && nbArt() != false) {
             ajoutPanier();
           }
@@ -98,7 +97,7 @@ fetch(`${url}/${id}`)
           ajoutPanier();
         }
 
-        console.log(panier)
+        // console.log(panier)
         //  console.log(recupData(res).col)
       }
 )
