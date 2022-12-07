@@ -4,6 +4,7 @@ const queryString = window.location.search;
 const paramUrl = new URLSearchParams(queryString)
 const id = paramUrl.get("id")
 
+let alreadyHave = false
 
 
 let parentImage = document.querySelector('.item__img');
@@ -58,8 +59,26 @@ fetch(`${url}/${id}`)
       // modification de la session avec l'objet
       let panier = JSON.parse(sessionStorage.getItem('list'));
       let ajoutPanier = () => {
+        if(!alreadyHave){
         panier.push(recupData(res));
         sessionStorage.setItem('list', JSON.stringify(panier));
+        }
+        else{
+          let target = panier.filter(item=> item.id === recupData(res).id && item.col === recupData(res).col);
+          let result = parseInt(target[0].quantite + recupData(res).quantite)
+          console.log("panier: "+target[0].quantite, "choix: "+recupData(res).quantite)
+          // let result = 5
+          console.log(alreadyHave)
+          panier.pop(target[0]);
+          console.log(result)
+          let baseChoice = recupData(res)
+          Object.defineProperty(baseChoice, "quantite", {
+            value: result,
+            writable: false
+          } )
+          panier.push(baseChoice);
+          sessionStorage.setItem('list', JSON.stringify(panier));
+        }
       }
        // sécurité nen nombre d'article
       let nbArt = ()=>{
@@ -73,12 +92,15 @@ fetch(`${url}/${id}`)
           let target = panier.filter(item=> item.id === recupData(res).id && item.col === recupData(res).col);
           console.log(target)
           if(target.length == 0){
-            alert("nouveau produit ajoué au panier")
-            return false
+            alert("nouveau produit ajouté au panier")
+            return true
           }
           else{
             alert('produit déja ajouté')
-            return true
+            // remplace le produit
+            alreadyHave = true
+            // r lp
+            return false
           }
      
   }

@@ -1,4 +1,24 @@
-
+let appelAPI = (singleprod)=>{
+fetch("http://localhost:3000/api/products", {
+  method: 'GET'
+})
+.then(response => response.json())
+.then((data) =>
+ {console.log(data)
+  let target = data.filter(item => item._id === singleprod.id)
+  console.log(target)
+  let resultat = target[0].price
+  console.log(resultat)
+  return resultat
+})
+}
+// if(!requete.ok) {
+//   alert('problème');
+// }
+// else{
+// let data = await requete.json();
+// data
+// }
 let tab = (JSON.parse(sessionStorage.getItem('list')));
 // console.log(tab.length);
 // console.log(tab);
@@ -14,16 +34,14 @@ totalPrix.textContent = base;
 
 if (tab!== null){
 tab.forEach(products => {
-
+ let Prix = parseInt(appelAPI(products))
+//  console.log(Prix)
   afficher = ()=>{
-
-   let makeArticle = (data)=>{
+     let makeArticle = (data)=>{
      let art = document.createElement('article');
      art.classList.add('cart__item');
      art.setAttribute('data-id', data.id);
      art.setAttribute('data-color' , data.col);
-    //  console.log(art);
-     
      return art
    }
    let makeImage = (data)=>{
@@ -56,7 +74,8 @@ tab.forEach(products => {
   let makePrice = (data)=>{
     let prix = 'prix';
     let price = document.createElement('p');
-    price.textContent = data.prix;
+    price.textContent = 2;
+    // console.log(appelAPI(data))
     price.classList.add('prix');
     return price;
   }
@@ -104,7 +123,7 @@ tab.forEach(products => {
    
     let total = (data)=>{
       //  let Span = document.querySelector('#totalQuantity');
-       let result = data.prix * input.value;
+       let result =   2 * input.value;
        prix.textContent = result;
       //  Span.textContent = 'hdblv'
       //  return  result
@@ -280,7 +299,8 @@ let messageCorrect = 'formulaire valide';
 
 // console.log(valid)
 //rejex voulu
-let lettres = /^[a-zA-Z\s]+$/;
+// let lettres = /^[a-zA-Z\s]+$/;
+let lettres = /^[a-zA-Z\u00C0-\u00FF]*$/;
 let chiffres = /^[0-9]/;
 let mail =  /\S+@\S+\.\S+/;
 // console.log(lettres)
