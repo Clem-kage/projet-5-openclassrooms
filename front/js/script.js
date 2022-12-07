@@ -1,6 +1,6 @@
 const url="http://localhost:3000/api/products";
 
-let sectionProduit = document.querySelector('.items')
+let sectionProduit = document.querySelector('.items');
 let produit = document.querySelector('a');
 console.log(localStorage.getItem('list'));
 // let text = document.querySelector('#item:fisrt');

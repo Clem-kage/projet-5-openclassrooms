@@ -82,6 +82,14 @@ tab.forEach(products => {
     input.setAttribute('max', 100);
     input.setAttribute('value', data.quantite);
 
+   input.addEventListener('change',(e)=>{
+    let quant = e.target.value
+    if(quant >= 100 || quant <= 0){
+     alert('quantité impossible ')   
+     location.reload()
+   }
+   })
+
     quant.appendChild(input);
     input.classList.add('itemQuantity');
     // console.log(para);
