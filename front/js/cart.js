@@ -108,21 +108,31 @@ afficher = (products, price) => {
 
     return quant;
   };
-  let makeDelete = (sesSto) => {
+
+  let makeDelete = (sesSto, article) => {
     let div = document.createElement("div");
     div.classList.add("cart__item__content__settings__delete");
     let lien = document.createElement("a");
     lien.href = "/front/html/cart.html";
     lien.style.textDecoration = "none";
     lien.style.color = "inherit";
-    lien.addEventListener("click", () => {
+    let dataId  = article.getAttribute("data-id");
+    let dataColor  = article.getAttribute("data-color");
+    console.log(dataId)
+    console.log(dataColor)
+    let target = sesSto.filter(item => item.id !== dataId || item.id === dataId && item.col !== dataColor)
+    // console.log(target)
+    lien.addEventListener("click", (e) => {
+      e.preventDefault()
       article.style.display = "none";
-      sesSto.pop();
-      sessionStorage.setItem("list", JSON.stringify(sesSto));
-
-      if (tab < 1) {
-        sessionStorage.clear();
-      }
+      // sesSto.pop();
+      sessionStorage.setItem("list", JSON.stringify(target));
+      console.log(target)
+      console.log(sesSto)
+      // if (tab.length < 0){
+      //   sessionStorage.clear();
+      // }
+      totalArticles()
     });
     let btnSupp = document.createElement("p");
     btnSupp.classList.add("deleteItem");
@@ -141,7 +151,7 @@ afficher = (products, price) => {
   let prix = makePrice(products);
   let settings = makeSets();
   let divQuantite = makeQuantity(products);
-  let divDelete = makeDelete(tab);
+  let divDelete = makeDelete(tab, article);
 
   sectionArticle.appendChild(article);
   article.appendChild(image);
