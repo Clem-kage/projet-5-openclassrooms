@@ -73,8 +73,6 @@ fetch(`${url}/${id}`)
               item.id === recupData(res).id && item.col === recupData(res).col)
           );
           let result = parseInt(target[0].quantite + recupData(res).quantite);
-          // let supp = panier.pop(target[0]);
-          // console.log("vrai supp "+ JSON.stringify(supp))
           console.log("target à supprimer: "+ JSON.stringify(target))
           let delElement = panier.find(item=> item === target[0])
           console.log(panier.indexOf(delElement))
@@ -86,7 +84,6 @@ fetch(`${url}/${id}`)
 
           panier.splice(panier.indexOf(delElement), 1, newChoice) 
           console.log("nouvel article à push: " + JSON.stringify(newChoice))
-          // panier.push(newChoice);
           console.log("panier: "+ JSON.stringify(panier))
           sessionStorage.setItem("list", JSON.stringify(panier));
         }

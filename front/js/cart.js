@@ -10,7 +10,7 @@ let transfert = [];
 
 afficher = (products, price) => {
   const Prix = price;
-  console.log(Prix);
+  // console.log(Prix);
   let makeArticle = (data) => {
     let art = document.createElement("article");
     art.classList.add("cart__item");
@@ -75,11 +75,19 @@ afficher = (products, price) => {
     input.setAttribute("value", data.quantite);
 
     input.addEventListener("input", (e) => {
+      let returnedTab = []
+      if(returnedTab.length > 0){
+        returnedTab.pop()
+      }
       let NumbQuant = e.target.value;
       para.textContent = "Qté :" + NumbQuant;
       if (NumbQuant >= 100 || NumbQuant <= 0) {
         alert("quantité impossible ");
         location.reload();
+      }else{
+        let multi = (NumbQuant * Prix)
+        returnedTab.push(multi)
+        console.log(returnedTab)
       }
     });
 
@@ -91,18 +99,11 @@ afficher = (products, price) => {
     };
     newquantity();
 
-    let total = () => {
-      let result = Prix * Number(input.value);
-      prix.textContent = result;
-    };
-
-    total();
-
     input.addEventListener("input", (e) => {
       setTimeout(() => {
         totalArticles(tab);
       }, 1000);
-      total(products);
+      // total(products);
     });
 
     return quant;
@@ -154,32 +155,28 @@ afficher = (products, price) => {
   settings.appendChild(divDelete);
   article.appendChild(contenu);
 
+
+
   //---------------------------------------------------------------------
   //fin systeme d'affichage
 
   //systeme de calcul-------------------------------------------------------
   let totalArticles = () => {
-    let tabPrix = [];
-    let tabQuant = [];
-    let prices = document.querySelectorAll(".prix");
-    let quantity = document.querySelectorAll(".itemQuantity");
+    let items = document.querySelectorAll(".cart__item")
+    let tabPrix = []
 
-    prices.forEach((oneP) => {
-      let resP = oneP.textContent;
-      let resultatP = Number(resP);
-      tabPrix.push(resultatP);
-    });
-    quantity.forEach((oneQ) => {
-      let resQ = Number(oneQ.value);
-      tabQuant.push(resQ);
-    });
-
-    let reducer = (accumulator, currentValue) => accumulator + currentValue;
-    let finalPrice = tabPrix.reduce(reducer);
+    items.forEach((item)=>{
+      let multiple = item.childNodes[1].childNodes[1].childNodes[0].childNodes[1].value;
+      let prix = Number(item.childNodes[1].childNodes[0].childNodes[2].textContent)
+      let result = multiple* prix
+          console.log(result)
+      tabPrix.push(result)   
+      console.log(tabPrix) 
+          let reducer = (accumulator, currentValue) => accumulator + currentValue;
+          let finalPrice = tabPrix.reduce(reducer);
     totalPrix.innerHTML = finalPrice;
-    let finalQuant = tabQuant.reduce(reducer);
-    totalQ.innerHTML = finalQuant;
-  };
+    })
+    };
   totalArticles();
   //systeme de calcul-------------------------------------------------------
 };
@@ -193,7 +190,6 @@ let appelAPI = async (singleprod) => {
       let Prix = dataP.price;
 
       afficher(singleprod, Prix);
-      console.log(Prix);
     });
 };
 
