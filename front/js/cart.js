@@ -121,17 +121,12 @@ afficher = (products, price) => {
     console.log(dataId)
     console.log(dataColor)
     let target = sesSto.filter(item => item.id !== dataId || item.id === dataId && item.col !== dataColor)
-    // console.log(target)
     lien.addEventListener("click", (e) => {
       e.preventDefault()
       article.style.display = "none";
-      // sesSto.pop();
       sessionStorage.setItem("list", JSON.stringify(target));
-      console.log(target)
-      console.log(sesSto)
-      // if (tab.length < 0){
-      //   sessionStorage.clear();
-      // }
+      // console.log(target)
+      // console.log(sesSto)
       totalArticles()
     });
     let btnSupp = document.createElement("p");
@@ -173,18 +168,24 @@ afficher = (products, price) => {
   //systeme de calcul-------------------------------------------------------
   let totalArticles = () => {
     let items = document.querySelectorAll(".cart__item")
+    let quantiteFinal = document.querySelector("#totalQuantity");
     let tabPrix = []
-
+    let tabMultip = []
     items.forEach((item)=>{
-      let multiple = item.childNodes[1].childNodes[1].childNodes[0].childNodes[1].value;
+      let multiple = Number(item.childNodes[1].childNodes[1].childNodes[0].childNodes[1].value);
       let prix = Number(item.childNodes[1].childNodes[0].childNodes[2].textContent)
       let result = multiple* prix
           console.log(result)
+      tabMultip.push(multiple) 
+      console.log(tabMultip) 
       tabPrix.push(result)   
       console.log(tabPrix) 
           let reducer = (accumulator, currentValue) => accumulator + currentValue;
           let finalPrice = tabPrix.reduce(reducer);
     totalPrix.innerHTML = finalPrice;
+          let reducerB = (accumulator, currentValue) => accumulator + currentValue;
+          let numberFinal = tabMultip.reduce(reducerB);
+          quantiteFinal.textContent = numberFinal
     })
     };
   totalArticles();

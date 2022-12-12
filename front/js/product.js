@@ -73,9 +73,9 @@ fetch(`${url}/${id}`)
               item.id === recupData(res).id && item.col === recupData(res).col)
           );
           let result = parseInt(target[0].quantite + recupData(res).quantite);
-          console.log("target à supprimer: "+ JSON.stringify(target))
+          // console.log("target à supprimer: "+ JSON.stringify(target))
           let delElement = panier.find(item=> item === target[0])
-          console.log(panier.indexOf(delElement))
+          // console.log(panier.indexOf(delElement))
           let baseChoice = recupData(res);
           let newChoice = Object.defineProperty(baseChoice, "quantite", {
             value: result,
@@ -83,8 +83,8 @@ fetch(`${url}/${id}`)
           });
 
           panier.splice(panier.indexOf(delElement), 1, newChoice) 
-          console.log("nouvel article à push: " + JSON.stringify(newChoice))
-          console.log("panier: "+ JSON.stringify(panier))
+          // console.log("nouvel article à push: " + JSON.stringify(newChoice))
+          // console.log("panier: "+ JSON.stringify(panier))
           sessionStorage.setItem("list", JSON.stringify(panier));
         }
       };
